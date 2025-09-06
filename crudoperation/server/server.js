@@ -1,9 +1,11 @@
+require('dotenv').config()
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 
 
 const app = express()
+const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use(express.json())
@@ -13,7 +15,7 @@ const taskrouter = express.Router()
 
 const connectdb = async()=>{
     try{
-        const connection = await mongoose.connect("mongodb+srv://sai:sai@cluster0.734gkmw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+        const connection = await mongoose.connect(process.env.MONGO_URI)
         console.log("mongodb is connected")
 
     }catch(err){
@@ -113,7 +115,7 @@ taskrouter.get('/get/:id',async(req,res)=>{
 app.use('/api/task',taskrouter)
 
 
-app.listen(5000,()=>{
+app.listen(PORT,()=>{
     console.log("server is running at port 5000")
     connectdb()
 })
